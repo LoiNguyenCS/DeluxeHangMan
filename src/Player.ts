@@ -1,5 +1,5 @@
 /**
- * This is to save the related information for each player
+ * Each Player instance corresponds to one player.
  */
 import { Team } from "./Team";
 
