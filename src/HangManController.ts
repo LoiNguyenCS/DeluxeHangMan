@@ -11,6 +11,9 @@ export class HangManController {
   private listOfGameSession: Game[];
   constructor() {
     console.log("New HangManController created!");
+    this.listOfGameSession = [];
+    this.listOfTeams = [];
+    this.listOfPlayers = [];
   }
   addPlayer(newPlayer: Player) {
     this.listOfPlayers.push(newPlayer);
@@ -18,8 +21,8 @@ export class HangManController {
   addTeam(newTeam: Team) {
     this.listOfTeams.push(newTeam);
   }
-  addNewGameSession(){
-    const newSession = new Game();
+  addNewGameSession(newPlayer: Player | Team ){
+    const newSession = new Game(newPlayer);
     this.listOfGameSession.push(newSession);
   }
   removePlayer() {

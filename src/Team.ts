@@ -8,5 +8,9 @@ export class Team {
     private players: Player[];
     private score: number;
     // the one who will decide the words for other player to guess
-    private host: Player;
+    private host: Player | undefined;
+    constructor(players: Player[], host: Player | undefined) {
+        this.players = players;
+        this.host = host;
+    }
 }

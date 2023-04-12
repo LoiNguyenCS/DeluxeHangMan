@@ -7,6 +7,9 @@ import { Team } from "./Team";
 
 export class Game {
      participants: Player | Team;
+     constructor(participants: Player | Team){
+        this.participants = participants;
+     }
      generateTheWord() {
         throw new Error("Not implemented");
      }
