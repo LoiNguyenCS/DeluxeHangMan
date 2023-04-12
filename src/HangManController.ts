@@ -5,11 +5,13 @@ import express from 'express';
 import { Team } from './Team';
 import { Player } from './Player';
 import path from 'path';
+import { Game } from './Game';
 
 export class HangManController {
   private port: number;
   private listOfPlayers: Player[];
   private listOfTeams: Team[];
+  private listOfGameSession: Game[];
   private serverStarted = false;
   constructor() {
     this.port = 2010;
@@ -33,6 +35,10 @@ export class HangManController {
   }
   addTeam(newTeam: Team) {
     this.listOfTeams.push(newTeam);
+  }
+  addNewGameSession(){
+    const newSession = new Game();
+    this.listOfGameSession.push(newSession);
   }
   removePlayer() {
     throw new Error("Function not implemented");
