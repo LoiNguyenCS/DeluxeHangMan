@@ -7,10 +7,10 @@ import path from 'path';
 
 const app = express();
 const port = 2010;
-app.use('/dist', express.static('dist'));
-app.get('/', (_, res) => {
-    res.sendFile(path.join(__dirname, './index.html'));
-  });
+app.use(express.static(__dirname + '/../public'));
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '../public/index.html');
+});
 app.listen(port, () => {
    return console.log(`Express is listening at http://localhost:${port}`);    
 });
