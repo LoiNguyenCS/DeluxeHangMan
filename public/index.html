@@ -1,11 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+<script>
+function hide(element){
+
+    
+    element.style.display = "none";
+}
+
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+</script>
+<style>
+div {
+      font-size: 55px;
+    }
+.vertical-line{
+	border-left: 5px solid black;
+	height: 100000px;
+	}
+.horizontal-line{
+	border-top: 5px solid black;
+	width: 2000px;
+	}
+.key{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 70px;
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	}
+.key:hover{
+	font-size: 100px;
+	color: red;
+	cursor: pointer;
+	
+	}
+
+</style>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Hang Man Game</title>
+<title>HangMan Game</title>
+<div id = "TopMostSection">
+	<div id = "Timer" style="display: inline-block; width: 85%;">
+	Timer: 30
+	</div>
+	<div id = "Role" style="display: inline-block; width: 1%;">
+	Role: Guesser
+	</div>
+	
+</div>
+
+<div align ="center" id="heading">
+ Player 1's Turn
+</div>
+<br>
+<div class = horizontal-line> </div>
+
+<div class = vertical-line style = "position: absolute; left:1500px; bottom: 0px;"></div>
+
+<div style = "font-size: 80px; padding-left: 100px; padding-top: 100px;">
+  _ _ _ _ _ _ _ 
+<br>
+_ _ _ _ _ _ _ _ _ _ _
+<br>
+_ _ _
+<br>
+_ _ _ _ _ _ _ _ 
+</div>
+<img src = "hang.png" style = " position: absolute;left: 1550px; bottom: 250px" width= 400 > </img>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class = horizontal-line style = "width: 1495px"> </div>
+<span class = key id = "A" onclick="hide(this)">A</span>
+<span class = key id = "B" onclick="hide(this)">B</span>
+<span class = key id = "C" onclick="hide(this)">C</span>
+<span class = key id = "D" onclick="hide(this)">D</span>
+<span class = key id = "E" onclick="hide(this)">E</span>
+<span class = key id = "F" onclick="hide(this)">F</span>
+<span class = key id = "G" onclick="hide(this)">G</span>
+<span class = key id = "H" onclick="hide(this)">H</span>
+<span class = key id = "I" onclick="hide(this)">I</span>
+<span class = key id = "J" onclick="hide(this)">J</span>
+<span class = key id = "K" onclick="hide(this)">K</span>
+<span class = key id = "L" onclick="hide(this)">L</span>
+<span class = key id = "M" onclick="hide(this)">M</span>
+<br>
+<br>
+<span class = key id = "N" onclick="hide(this)">N</span>
+<span class = key id = "O" onclick="hide(this)">O</span>
+<span class = key id = "P" onclick="hide(this)">P</span>
+<span class = key id = "Q" onclick="hide(this)">Q</span>
+<span class = key id = "R" onclick="hide(this)">R</span>
+<span class = key id = "S" onclick="hide(this)">S</span>
+<span class = key id = "T" onclick="hide(this)">T</span>
+<span class = key id = "U" onclick="hide(this)">U</span>
+<span class = key id = "V" onclick="hide(this)">V</span>
+<span class = key id = "W" onclick="hide(this)">W</span>
+<span class = key id = "X" onclick="hide(this)">X</span>
+<span class = key id = "Y" onclick="hide(this)">Y</span>
+<span class = key id = "Z" onclick="hide(this)">Z</span>
+
 </head>
-<body>
-  <h1>will be available soon</h1>
-</body>
+
+
+
+<center>
+
+</center>
+
+	
 </html>
