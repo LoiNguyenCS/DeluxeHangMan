@@ -18,10 +18,6 @@ io.sockets.on('connection', function (socket) {
   app.get(`/${roomId}`, (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
   });
-  app.get('/join', (req, res) => {
-    res.redirect(`/${roomId}`);
-  });
-  
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
