@@ -19,6 +19,16 @@ io.sockets.on('connection', function (socket) {
     res.sendFile(__dirname + '/public/index.html');
   });
   const currentSession = new GameSession("HELLO", 5);
+  socket.on('keyPressed', (letter) => {
+    const letterGuessed = `${letter}`
+    console.log(`User ${roomId} chose ${letter}`);
+    currentSession.guess(letterGuessed);
+    const attemptsLeft = currentSession.attemptsLeft;
+    console.log(`${attemptsLeft} attemps left`);
+    if (currentSession.status == 'WIN' || currentSession.status == 'LOSE') {
+      socket.emit('endGame', currentSession.status);
+    }
+  });
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

@@ -99,14 +99,28 @@ _ _ _ _ _ _ _ _
 <span class="key" id="X" onclick="onClick('X')">X</span>
 <span class="key" id="Y" onclick="onClick('Y')">Y</span>
 <span class="key" id="Z" onclick="onClick('Z')">Z</span>
-
+<div id="lose-message" style="display:none;">You Lose!</div>
+<div id="win-message" style="display:none;">You Won!</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	var socket = io();
 	function onClick(key) {
     socket.emit('keyPressed', key);
     document.getElementById(key).style.display = 'none';
-  }
+    }
+	 // Listen for the "endGame" message from the server
+	socket.on('endGame', (result) => {
+    console.log('user lose');
+	if (result == "LOSE") {
+		// Show the "You lose" message. We might have this on a separate page in the future
+		document.getElementById('lose-message').style.display = 'block';
+	}
+	else {
+		// Show the "You won" message. We might have this on a separate page in the future
+		document.getElementById('win-message').style.display = 'block';
+	}
+    
+  });
 </script>
 
 </head>
