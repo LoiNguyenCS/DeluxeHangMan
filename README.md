@@ -7,3 +7,6 @@ npm install
 node index.js
 ```
 The game will be hosted at localhost:3000
+
+If you want to format your codes, use:
+```npm run format```
