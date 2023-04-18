@@ -7,7 +7,7 @@
     "socket.io": "^4.6.1"
   },
   "scripts": {
-    "format": "eslint '**/*.js' --fix && prettier '**/*.{js,jsx,html}' --write"
+    "format": "prettier --write \"public/**/*.html\""
   },
   "devDependencies": {
     "eslint": "^8.38.0",

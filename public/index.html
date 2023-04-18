@@ -1,135 +1,122 @@
 <html>
-<script>
-function hide(element){
-
-    
-    element.style.display = "none";
-}
-
-</script>
-<style>
-div {
+  <script>
+    function hide(element) {
+      element.style.display = 'none'
+    }
+  </script>
+  <style>
+    div {
       font-size: 55px;
     }
-.vertical-line{
-	border-left: 5px solid black;
-	height: 100000px;
-	}
-.horizontal-line{
-	border-top: 5px solid black;
-	width: 2000px;
-	}
-.key{
-	font-family: "Comic Sans MS", cursive, sans-serif;
-	font-size: 70px;
-	padding-left: 30px;
-	padding-right: 30px;
-	
-	}
-.key:hover{
-	font-size: 100px;
-	color: red;
-	cursor: pointer;
-	
-	}
-
-</style>
-<head>
-<title>HangMan Game</title>
-<div id = "TopMostSection">
-	<div id = "Timer" style="display: inline-block; width: 85%;">
-	Timer: 30
-	</div>
-	<div id = "Role" style="display: inline-block; width: 1%;">
-	Role: Guesser
-	</div>
-	
-</div>
-
-<div align ="center" id="heading">
- Player 1's Turn
-</div>
-<br>
-<div class = horizontal-line> </div>
-
-<div class = vertical-line style = "position: absolute; left:1500px; bottom: 0px;"></div>
-
-<div style = "font-size: 80px; padding-left: 100px; padding-top: 100px;">
-  _ _ _ _ _ _ _ 
-<br>
-_ _ _ _ _ _ _ _ _ _ _
-<br>
-_ _ _
-<br>
-_ _ _ _ _ _ _ _ 
-</div>
-<img src = "hang.png" style = " position: absolute;left: 1550px; bottom: 250px" width= 400 > </img>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div class = horizontal-line style = "width: 1495px"> </div>
-<span class="key" id="A" onclick="onClick('A')">A</span>
-<span class="key" id="B" onclick="onClick('B')">B</span>
-<span class="key" id="C" onclick="onClick('C')">C</span>
-<span class="key" id="D" onclick="onClick('D')">D</span>
-<span class="key" id="E" onclick="onClick('E')">E</span>
-<span class="key" id="F" onclick="onClick('F')">F</span>
-<span class="key" id="G" onclick="onClick('G')">G</span>
-<span class="key" id="H" onclick="onClick('H')">H</span>
-<span class="key" id="I" onclick="onClick('I')">I</span>
-<span class="key" id="J" onclick="onClick('J')">J</span>
-<span class="key" id="K" onclick="onClick('K')">K</span>
-<span class="key" id="L" onclick="onClick('L')">L</span>
-<span class="key" id="M" onclick="onClick('M')">M</span>
-<br>
-<br>
-<span class="key" id="N" onclick="onClick('N')">N</span>
-<span class="key" id="O" onclick="onClick('O')">O</span>
-<span class="key" id="P" onclick="onClick('P')">P</span>
-<span class="key" id="Q" onclick="onClick('Q')">Q</span>
-<span class="key" id="R" onclick="onClick('R')">R</span>
-<span class="key" id="S" onclick="onClick('S')">S</span>
-<span class="key" id="T" onclick="onClick('T')">T</span>
-<span class="key" id="U" onclick="onClick('U')">U</span>
-<span class="key" id="V" onclick="onClick('V')">V</span>
-<span class="key" id="W" onclick="onClick('W')">W</span>
-<span class="key" id="X" onclick="onClick('X')">X</span>
-<span class="key" id="Y" onclick="onClick('Y')">Y</span>
-<span class="key" id="Z" onclick="onClick('Z')">Z</span>
-<div id="lose-message" style="display:none;">You Lose!</div>
-<div id="win-message" style="display:none;">You Won!</div>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-	var socket = io();
-	function onClick(key) {
-    socket.emit('keyPressed', key);
-    document.getElementById(key).style.display = 'none';
+    .vertical-line {
+      border-left: 5px solid black;
+      height: 100000px;
     }
-	 // Listen for the "endGame" message from the server
-	socket.on('endGame', (result) => {
-    console.log('user lose');
-	if (result == "LOSE") {
-		// Show the "You lose" message. We might have this on a separate page in the future
-		document.getElementById('lose-message').style.display = 'block';
-	}
-	else {
-		// Show the "You won" message. We might have this on a separate page in the future
-		document.getElementById('win-message').style.display = 'block';
-	}
-    
-  });
-</script>
+    .horizontal-line {
+      border-top: 5px solid black;
+      width: 2000px;
+    }
+    .key {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 70px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    .key:hover {
+      font-size: 100px;
+      color: red;
+      cursor: pointer;
+    }
+  </style>
+  <head>
+    <title>HangMan Game</title>
+    <div id="TopMostSection">
+      <div id="Timer" style="display: inline-block; width: 85%">Timer: 30</div>
+      <div id="Role" style="display: inline-block; width: 1%">
+        Role: Guesser
+      </div>
+    </div>
 
-</head>
+    <div align="center" id="heading">Player 1's Turn</div>
+    <br />
+    <div class="horizontal-line"></div>
 
+    <div
+      class="vertical-line"
+      style="position: absolute; left: 1500px; bottom: 0px"
+    ></div>
 
+    <div style="font-size: 80px; padding-left: 100px; padding-top: 100px">
+      _ _ _ _ _ _ _
+      <br />
+      _ _ _ _ _ _ _ _ _ _ _
+      <br />
+      _ _ _
+      <br />
+      _ _ _ _ _ _ _ _
+    </div>
+    <img
+      src="hang.png"
+      style="position: absolute; left: 1550px; bottom: 250px"
+      width="400"
+    />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="horizontal-line" style="width: 1495px"></div>
+    <span class="key" id="A" onclick="onClick('A')">A</span>
+    <span class="key" id="B" onclick="onClick('B')">B</span>
+    <span class="key" id="C" onclick="onClick('C')">C</span>
+    <span class="key" id="D" onclick="onClick('D')">D</span>
+    <span class="key" id="E" onclick="onClick('E')">E</span>
+    <span class="key" id="F" onclick="onClick('F')">F</span>
+    <span class="key" id="G" onclick="onClick('G')">G</span>
+    <span class="key" id="H" onclick="onClick('H')">H</span>
+    <span class="key" id="I" onclick="onClick('I')">I</span>
+    <span class="key" id="J" onclick="onClick('J')">J</span>
+    <span class="key" id="K" onclick="onClick('K')">K</span>
+    <span class="key" id="L" onclick="onClick('L')">L</span>
+    <span class="key" id="M" onclick="onClick('M')">M</span>
+    <br />
+    <br />
+    <span class="key" id="N" onclick="onClick('N')">N</span>
+    <span class="key" id="O" onclick="onClick('O')">O</span>
+    <span class="key" id="P" onclick="onClick('P')">P</span>
+    <span class="key" id="Q" onclick="onClick('Q')">Q</span>
+    <span class="key" id="R" onclick="onClick('R')">R</span>
+    <span class="key" id="S" onclick="onClick('S')">S</span>
+    <span class="key" id="T" onclick="onClick('T')">T</span>
+    <span class="key" id="U" onclick="onClick('U')">U</span>
+    <span class="key" id="V" onclick="onClick('V')">V</span>
+    <span class="key" id="W" onclick="onClick('W')">W</span>
+    <span class="key" id="X" onclick="onClick('X')">X</span>
+    <span class="key" id="Y" onclick="onClick('Y')">Y</span>
+    <span class="key" id="Z" onclick="onClick('Z')">Z</span>
+    <div id="lose-message" style="display: none">You Lose!</div>
+    <div id="win-message" style="display: none">You Won!</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io()
+      function onClick(key) {
+        socket.emit('keyPressed', key)
+        document.getElementById(key).style.display = 'none'
+      }
+      // Listen for the "endGame" message from the server
+      socket.on('endGame', (result) => {
+        console.log('user lose')
+        if (result == 'LOSE') {
+          // Show the "You lose" message. We might have this on a separate page in the future
+          document.getElementById('lose-message').style.display = 'block'
+        } else {
+          // Show the "You won" message. We might have this on a separate page in the future
+          document.getElementById('win-message').style.display = 'block'
+        }
+      })
+    </script>
+  </head>
 
-<center>
-
-</center>
-
-	
+  <center></center>
 </html>
