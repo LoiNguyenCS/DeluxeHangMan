@@ -18,9 +18,6 @@ io.sockets.on('connection', function (socket) {
   app.get(`/${roomId}`, (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
   });
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
