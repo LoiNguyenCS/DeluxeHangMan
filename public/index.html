@@ -71,41 +71,47 @@ _ _ _ _ _ _ _ _
 <br>
 <br>
 <div class = horizontal-line style = "width: 1495px"> </div>
-<span class = key id = "A" onclick="hide(this)">A</span>
-<span class = key id = "B" onclick="hide(this)">B</span>
-<span class = key id = "C" onclick="hide(this)">C</span>
-<span class = key id = "D" onclick="hide(this)">D</span>
-<span class = key id = "E" onclick="hide(this)">E</span>
-<span class = key id = "F" onclick="hide(this)">F</span>
-<span class = key id = "G" onclick="hide(this)">G</span>
-<span class = key id = "H" onclick="hide(this)">H</span>
-<span class = key id = "I" onclick="hide(this)">I</span>
-<span class = key id = "J" onclick="hide(this)">J</span>
-<span class = key id = "K" onclick="hide(this)">K</span>
-<span class = key id = "L" onclick="hide(this)">L</span>
-<span class = key id = "M" onclick="hide(this)">M</span>
+<span class="key" id="A" onclick="onClick('A')">A</span>
+<span class="key" id="B" onclick="onClick('B')">B</span>
+<span class="key" id="C" onclick="onClick('C')">C</span>
+<span class="key" id="D" onclick="onClick('D')">D</span>
+<span class="key" id="E" onclick="onClick('E')">E</span>
+<span class="key" id="F" onclick="onClick('F')">F</span>
+<span class="key" id="G" onclick="onClick('G')">G</span>
+<span class="key" id="H" onclick="onClick('H')">H</span>
+<span class="key" id="I" onclick="onClick('I')">I</span>
+<span class="key" id="J" onclick="onClick('J')">J</span>
+<span class="key" id="K" onclick="onClick('K')">K</span>
+<span class="key" id="L" onclick="onClick('L')">L</span>
+<span class="key" id="M" onclick="onClick('M')">M</span>
 <br>
 <br>
-<span class = key id = "N" onclick="hide(this)">N</span>
-<span class = key id = "O" onclick="hide(this)">O</span>
-<span class = key id = "P" onclick="hide(this)">P</span>
-<span class = key id = "Q" onclick="hide(this)">Q</span>
-<span class = key id = "R" onclick="hide(this)">R</span>
-<span class = key id = "S" onclick="hide(this)">S</span>
-<span class = key id = "T" onclick="hide(this)">T</span>
-<span class = key id = "U" onclick="hide(this)">U</span>
-<span class = key id = "V" onclick="hide(this)">V</span>
-<span class = key id = "W" onclick="hide(this)">W</span>
-<span class = key id = "X" onclick="hide(this)">X</span>
-<span class = key id = "Y" onclick="hide(this)">Y</span>
-<span class = key id = "Z" onclick="hide(this)">Z</span>
-
-</head>
+<span class="key" id="N" onclick="onClick('N')">N</span>
+<span class="key" id="O" onclick="onClick('O')">O</span>
+<span class="key" id="P" onclick="onClick('P')">P</span>
+<span class="key" id="Q" onclick="onClick('Q')">Q</span>
+<span class="key" id="R" onclick="onClick('R')">R</span>
+<span class="key" id="S" onclick="onClick('S')">S</span>
+<span class="key" id="T" onclick="onClick('T')">T</span>
+<span class="key" id="U" onclick="onClick('U')">U</span>
+<span class="key" id="V" onclick="onClick('V')">V</span>
+<span class="key" id="W" onclick="onClick('W')">W</span>
+<span class="key" id="X" onclick="onClick('X')">X</span>
+<span class="key" id="Y" onclick="onClick('Y')">Y</span>
+<span class="key" id="Z" onclick="onClick('Z')">Z</span>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	var socket = io();
+	function onClick(key) {
+    socket.emit('keyPressed', key);
+    document.getElementById(key).style.display = 'none';
+  }
 </script>
+
+</head>
+
+
 
 <center>
 
