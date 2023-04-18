@@ -1,28 +1,50 @@
 class GameSession {
-    constructor(roomId, io) {
-      this.roomId = roomId;
-      this.word = 'apple'; // The word to be guessed
-      this.guesses = new Set(); // Set to store the guessed letters
-      this.io = io;
+  constructor(word, maxAttempts) {
+    this.word = word.toUpperCase();
+    this.maxAttempts = maxAttempts;
+    this.attemptsLeft = maxAttempts;
+    this.guessedLetters = new Set();
+    this.status = 'IN_PROGRESS';
+  }
+
+  guess(letter) {
+    letter = letter.toUpperCase();
+    if (this.guessedLetters.has(letter)) {
+      return;
     }
-  
-    handleGuess(guess) {
-      if (this.word.includes(guess) && !this.guesses.has(guess)) {
-        this.guesses.add(guess);
-        console.log(`Correct guess: ${guess}`);
-        this.io.to(this.roomId).emit('game-state', {
-          correctGuess: guess,
-          guesses: Array.from(this.guesses)
-        });
-      } else {
-        console.log(`Incorrect guess: ${guess}`);
-        this.io.to(this.roomId).emit('game-state', {
-          incorrectGuess: guess,
-          guesses: Array.from(this.guesses)
-        });
+    this.guessedLetters.add(letter);
+    if (this.word.includes(letter)) {
+      if (this.isWordGuessed()) {
+        this.status = 'WIN';
+      }
+    } else {
+      this.attemptsLeft--;
+      if (this.attemptsLeft === 0) {
+        this.status = 'LOSE';
       }
     }
   }
-  
-  module.exports = GameSession;
+
+  isWordGuessed() {
+    for (let letter of this.word) {
+      if (!this.guessedLetters.has(letter)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  getGuessedWord() {
+    let result = '';
+    for (let letter of this.word) {
+      if (this.guessedLetters.has(letter)) {
+        result += letter;
+      } else {
+        result += '_';
+      }
+    }
+    return result;
+  }
+}
+module.exports = GameSession;
   

@@ -18,6 +18,7 @@ io.sockets.on('connection', function (socket) {
   app.get(`/${roomId}`, (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
   });
+  const currentSession = new GameSession("HELLO", 5);
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
