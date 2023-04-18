@@ -14,7 +14,7 @@ io.sockets.on('connection', function (socket) {
   console.log(`a user connected with id ${socket.id}`)
   const roomId = `${socket.id}`
   console.log(`server created /${roomId}`)
-  // Redirect the player to their unique URL
+  // Create a unique URL for the player
   app.get(`/${roomId}`, (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
   })
