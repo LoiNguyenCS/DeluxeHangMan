@@ -50,7 +50,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('keyPressed', letter, teamID)
     console.log(`${attemptsLeft} attemps left`)
     if (currentSession.status == 'WIN' || currentSession.status == 'LOSE') {
-      socket.emit('endGame', currentSession.status)
+      io.sockets.emit('endGame', currentSession.status, teamID)
     }
   })
   socket.on('disconnect', () => {

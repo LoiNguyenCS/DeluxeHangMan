@@ -113,14 +113,15 @@
         }
       })
       // Listen for the "endGame" message from the server
-      socket.on('endGame', (result) => {
-        console.log('user lose')
-        if (result == 'LOSE') {
-          // Show the "You lose" message. We might have this on a separate page in the future
-          document.getElementById('lose-message').style.display = 'block'
-        } else {
-          // Show the "You won" message. We might have this on a separate page in the future
-          document.getElementById('win-message').style.display = 'block'
+      socket.on('endGame', (result, tempTeamId) => {
+        if (tempTeamId == teamId) {
+          if (result == 'LOSE') {
+            // Show the "You lose" message. We might have this on a separate page in the future
+            document.getElementById('lose-message').style.display = 'block'
+          } else {
+            // Show the "You won" message. We might have this on a separate page in the future
+            document.getElementById('win-message').style.display = 'block'
+          }
         }
       })
     </script>
