@@ -1,10 +1,29 @@
 <h1>Welcome to Hangman!</h1>
 <p>Click the button below to join the game.</p>
-<button onclick="joinGame()">Join Game</button>
+<button onclick="joinGame()">Join Game As Individual</button>
+<p>Or join an existing team by entering the team ID:</p>
+<input type="text" id="teamId" />
+<button onclick="joinTeam()">Join Team</button>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io()
   function joinGame() {
+    socket.emit('joinAsIndividual')
     window.location.href = `/${socket.id}`
+  }
+
+  function joinTeam() {
+    const teamId = document.getElementById('teamId').value
+    socket.emit('joinAsTeam', teamId)
+    socket.on('gotATeam', (teamProgress) => {
+      window.location.href = `/${teamId}`
+    })
+    socket.on('invalidTeamID', () => {
+      alert('Invalid team ID. Please enter a valid team ID.')
+    })
+    socket.on('teamAlreadyStarted', () => {
+      alert('The team has already started the game')
+    })
   }
 </script>

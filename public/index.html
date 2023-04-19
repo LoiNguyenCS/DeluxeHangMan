@@ -100,11 +100,18 @@
     <div id="win-message" style="display: none">You Won!</div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      const urlAddress = window.location.href
+      const teamId = urlAddress.substring(urlAddress.lastIndexOf('/') + 1)
       var socket = io()
       function onClick(key) {
-        socket.emit('keyPressed', key)
+        socket.emit('keyPressed', key, teamId)
         document.getElementById(key).style.display = 'none'
       }
+      socket.on('keyPressed', (tempKey, tempTeamId) => {
+        if (tempTeamId == teamId) {
+          document.getElementById(tempKey).style.display = 'none'
+        }
+      })
       // Listen for the "endGame" message from the server
       socket.on('endGame', (result) => {
         console.log('user lose')
