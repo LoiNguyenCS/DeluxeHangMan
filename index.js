@@ -11,14 +11,14 @@ the user who created that GameSession instance
 const sessionList = {}
 let currentSession = new GameSession('', 0)
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/welcome.html')
 })
 
 /**
  * If a player joins as an individual, a new webpage will be served at localhost:3000/socket_id. Otherwise, he will join
- * another webpage created by some previous users. For convenience, we don't discriminate between individual mode and 
+ * another webpage created by some previous users. For convenience, we don't discriminate between individual mode and
  * team mode at the backend level. Every game session is regarded as a GameSession instance equally. Right now we are
  * having a lot of console logs printed because it is convenient for debugging. We can delete them in the future.
  */
