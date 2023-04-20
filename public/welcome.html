@@ -1,10 +1,23 @@
-<h1>Welcome to Hangman!</h1>
-<p>Click the button below to join the game.</p>
-<button onclick="joinGame()">Join Game As Individual</button>
-<p>Or join an existing team by entering the team ID:</p>
-<input type="text" id="teamId" />
-<button onclick="joinTeam()">Join Team</button>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to HangMan</title>
+  <link rel="stylesheet" href="output.css">
+</head>
+<body class="h-screen flex justify-center items-center font-mono">
+  <div class="p-5 flex-col items-center justify-center bg-slate-100 shadow-lg">
+    <h1 class="flex items-center justify-center text-5xl">Welcome to Hangman!</h1>
+    <p>Click the button below to join the game.</p>
+    <button class="p-2 pl-4 pr-4 bg-amber-300 rounded-full shadow-lg hover:bg-amber-500" onclick="joinGame()">Join Game As Individual</button>
+    <p>Or join an existing team by entering the team ID:</p>
+    <input class=" bg-neutral-50 shadow-lg rounded-sm focus:outline-none focus:ring focus:ring-amber-500" type="text" id="teamId" />
+    <button class="p-2 pl-4 pr-4 bg-amber-300 rounded-full shadow-lg hover:bg-amber-500" onclick="joinTeam()">Join Team</button>
+  </div>
 
+
+</body>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io()
@@ -27,3 +40,6 @@
     })
   }
 </script>
+</html>
+
+
