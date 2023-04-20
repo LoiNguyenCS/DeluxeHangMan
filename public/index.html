@@ -1,134 +1,232 @@
-<html>
-  <script>
-    function hide(element) {
-      element.style.display = 'none'
-    }
-  </script>
-  <style>
-    div {
-      font-size: 55px;
-    }
-    .vertical-line {
-      border-left: 5px solid black;
-      height: 100000px;
-    }
-    .horizontal-line {
-      border-top: 5px solid black;
-      width: 2000px;
-    }
-    .key {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-size: 70px;
-      padding-left: 30px;
-      padding-right: 30px;
-    }
-    .key:hover {
-      font-size: 100px;
-      color: red;
-      cursor: pointer;
-    }
-  </style>
+<html lang="en">
   <head>
-    <title>HangMan Game</title>
-    <div id="TopMostSection">
-      <div id="Timer" style="display: inline-block; width: 85%">Timer: 30</div>
-      <div id="Role" style="display: inline-block; width: 1%">
-        Role: Guesser
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HangMan</title>
+    <script>
+      function hide(element) {
+        element.style.display = 'none'
+      }
+    </script>
+    <link rel="stylesheet" type="text/css" href="output.css" />
+  </head>
+  <body class="h-screen grid grid-cols-3 grid-rows-6 gap-0 font-mono">
+    <div class="col-span-3 bg-slate-100 shadow-lg">
+      <div class="flex items-center justify-center h-full text-3xl">
+        <span class="p-10">Time: </span>
+        <span class="p-10 text-8xl">HangMan</span>
+        <span class="p-10">Role: </span>
       </div>
     </div>
 
-    <div align="center" id="heading">Player 1's Turn</div>
-    <br />
-    <div class="horizontal-line"></div>
-
-    <div
-      class="vertical-line"
-      style="position: absolute; left: 1500px; bottom: 0px"
-    ></div>
-
-    <div style="font-size: 80px; padding-left: 100px; padding-top: 100px">
-      _ _ _ _ _ _ _
-      <br />
-      _ _ _ _ _ _ _ _ _ _ _
-      <br />
-      _ _ _
-      <br />
-      _ _ _ _ _ _ _ _
+    <div class="p-4 m-0 row-start-2 col-span-3 flex items-start justify-center">
+      <span class="shadow-lg p-6">_ _ _ _ _ _ _ _ _ _ _ _ </span>
     </div>
-    <img
-      src="hang.png"
-      style="position: absolute; left: 1550px; bottom: 250px"
-      width="400"
-    />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <div class="horizontal-line" style="width: 1495px"></div>
-    <span class="key" id="A" onclick="onClick('A')">A</span>
-    <span class="key" id="B" onclick="onClick('B')">B</span>
-    <span class="key" id="C" onclick="onClick('C')">C</span>
-    <span class="key" id="D" onclick="onClick('D')">D</span>
-    <span class="key" id="E" onclick="onClick('E')">E</span>
-    <span class="key" id="F" onclick="onClick('F')">F</span>
-    <span class="key" id="G" onclick="onClick('G')">G</span>
-    <span class="key" id="H" onclick="onClick('H')">H</span>
-    <span class="key" id="I" onclick="onClick('I')">I</span>
-    <span class="key" id="J" onclick="onClick('J')">J</span>
-    <span class="key" id="K" onclick="onClick('K')">K</span>
-    <span class="key" id="L" onclick="onClick('L')">L</span>
-    <span class="key" id="M" onclick="onClick('M')">M</span>
-    <br />
-    <br />
-    <span class="key" id="N" onclick="onClick('N')">N</span>
-    <span class="key" id="O" onclick="onClick('O')">O</span>
-    <span class="key" id="P" onclick="onClick('P')">P</span>
-    <span class="key" id="Q" onclick="onClick('Q')">Q</span>
-    <span class="key" id="R" onclick="onClick('R')">R</span>
-    <span class="key" id="S" onclick="onClick('S')">S</span>
-    <span class="key" id="T" onclick="onClick('T')">T</span>
-    <span class="key" id="U" onclick="onClick('U')">U</span>
-    <span class="key" id="V" onclick="onClick('V')">V</span>
-    <span class="key" id="W" onclick="onClick('W')">W</span>
-    <span class="key" id="X" onclick="onClick('X')">X</span>
-    <span class="key" id="Y" onclick="onClick('Y')">Y</span>
-    <span class="key" id="Z" onclick="onClick('Z')">Z</span>
+    <div class="flex items-center justify-center row-start-3 col-span-3 h-30 w-30">
+      <img class="object-contain h-56 w-96 mt-24" src="hang.png" alt="hangman" >
+    </div>
+    <!-- <img
+    src="hang.png"
+    style="position: absolute; left: 1550px; bottom: 250px"
+    width="400"
+  /> -->
+    <form
+      class="p-4 row-start-5 col-span-3 flex items-end justify-center text-lg space-x-7"
+    >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="A"
+        onclick="onClick('A')"
+        >A</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="B"
+        onclick="onClick('B')"
+        >B</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="C"
+        onclick="onClick('C')"
+        >C</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="D"
+        onclick="onClick('D')"
+        >D</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="E"
+        onclick="onClick('E')"
+        >E</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="F"
+        onclick="onClick('F')"
+        >F</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="G"
+        onclick="onClick('G')"
+        >G</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="H"
+        onclick="onClick('H')"
+        >H</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="I"
+        onclick="onClick('I')"
+        >I</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="J"
+        onclick="onClick('J')"
+        >J</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="K"
+        onclick="onClick('K')"
+        >K</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="L"
+        onclick="onClick('L')"
+        >L</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="M"
+        onclick="onClick('M')"
+        >M</span
+      >
+    </form>
+    <form
+      class="row-start-6 col-span-3 flex items-start justify-center text-lg space-x-7"
+    >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="N"
+        onclick="onClick('N')"
+        >N</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="O"
+        onclick="onClick('O')"
+        >O</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="P"
+        onclick="onClick('P')"
+        >P</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="Q"
+        onclick="onClick('Q')"
+        >Q</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="R"
+        onclick="onClick('R')"
+        >R</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="S"
+        onclick="onClick('S')"
+        >S</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="T"
+        onclick="onClick('T')"
+        >T</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="U"
+        onclick="onClick('U')"
+        >U</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="V"
+        onclick="onClick('V')"
+        >V</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="W"
+        onclick="onClick('W')"
+        >W</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="X"
+        onclick="onClick('X')"
+        >X</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="Y"
+        onclick="onClick('Y')"
+        >Y</span
+      >
+      <span
+        class="key p-4 bg-white rounded-xl shadow-lg hover:bg-slate-100 cursor-pointer"
+        id="Z"
+        onclick="onClick('Z')"
+        >Z</span
+      >
+    </form>
     <!-- These two elements are temporary. I only put them here to check if the socket.io is working properly -->
     <div id="lose-message" style="display: none">You Lose!</div>
     <div id="win-message" style="display: none">You Won!</div>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      const urlAddress = window.location.href
-      const teamId = urlAddress.substring(urlAddress.lastIndexOf('/') + 1)
-      var socket = io()
-      function onClick(key) {
-        socket.emit('keyPressed', key, teamId)
-        document.getElementById(key).style.display = 'none'
+  </body>
+  <script>
+    const urlAddress = window.location.href
+    const teamId = urlAddress.substring(urlAddress.lastIndexOf('/') + 1)
+    var socket = io()
+    function onClick(key) {
+      socket.emit('keyPressed', key, teamId)
+      document.getElementById(key).style.display = 'none'
+    }
+    socket.on('keyPressed', (tempKey, tempTeamId) => {
+      if (tempTeamId == teamId) {
+        document.getElementById(tempKey).style.display = 'none'
       }
-      socket.on('keyPressed', (tempKey, tempTeamId) => {
-        if (tempTeamId == teamId) {
-          document.getElementById(tempKey).style.display = 'none'
+    })
+    // Listen for the "endGame" message from the server
+    socket.on('endGame', (result, tempTeamId) => {
+      if (tempTeamId == teamId) {
+        if (result == 'LOSE') {
+          // Show the "You lose" message. We might have this on a separate page in the future
+          document.getElementById('lose-message').style.display = 'block'
+        } else {
+          // Show the "You won" message. We might have this on a separate page in the future
+          document.getElementById('win-message').style.display = 'block'
         }
-      })
-      // Listen for the "endGame" message from the server
-      socket.on('endGame', (result, tempTeamId) => {
-        if (tempTeamId == teamId) {
-          if (result == 'LOSE') {
-            // Show the "You lose" message. We might have this on a separate page in the future
-            document.getElementById('lose-message').style.display = 'block'
-          } else {
-            // Show the "You won" message. We might have this on a separate page in the future
-            document.getElementById('win-message').style.display = 'block'
-          }
-        }
-      })
-      window.onbeforeunload = function(e) {
-        return "Do you want to exit this page?";
-      }; 
-    </script>
-  </head>
-
-  <center></center>
+      }
+    })
+    window.onbeforeunload = function (e) {
+      return 'Do you want to exit this page?'
+    }
+  </script>
 </html>

@@ -11,9 +11,11 @@ the user who created that GameSession instance
 const sessionList = {}
 let currentSession = new GameSession('', 0)
 
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/welcome.html')
 })
+app.use(express.static('public'));
 
 /**
  * If a player joins as an individual, a new webpage will be served at localhost:3000/socket_id. Otherwise, he will join
