@@ -11,6 +11,7 @@ the user who created that GameSession instance
 const sessionList = {}
 let currentSession = new GameSession('', 0)
 
+app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/welcome.html')
 })
