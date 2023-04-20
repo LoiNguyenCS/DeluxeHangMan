@@ -10,17 +10,17 @@
     }
     .vertical-line {
       border-left: 5px solid black;
-      height: 100000px;
+      height: 100%;
     }
     .horizontal-line {
       border-top: 5px solid black;
-      width: 2000px;
+      width: 100%;
     }
     .key {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       font-size: 70px;
-      padding-left: 30px;
-      padding-right: 30px;
+      padding-left: 1.5%;
+	padding-right: 1.5%;
     }
     .key:hover {
       font-size: 100px;
@@ -31,8 +31,8 @@
   <head>
     <title>HangMan Game</title>
     <div id="TopMostSection">
-      <div id="Timer" style="display: inline-block; width: 85%">Timer: 30</div>
-      <div id="Role" style="display: inline-block; width: 1%">
+		<div id = "Timer" style="display: inline-block;"> Timer: 30 </div>
+      <div id = "Role" style="display: inline-block;position: absolute; left: 80%;">
         Role: Guesser
       </div>
     </div>
@@ -41,12 +41,9 @@
     <br />
     <div class="horizontal-line"></div>
 
-    <div
-      class="vertical-line"
-      style="position: absolute; left: 1500px; bottom: 0px"
-    ></div>
+	<div class = vertical-line style = "position: absolute; left:76%; bottom: 0px;"></div>
 
-    <div style="font-size: 80px; padding-left: 100px; padding-top: 100px">
+    <div style = "font-size: 80px; padding-left: 5%; padding-top: 7%;">
       _ _ _ _ _ _ _
       <br />
       _ _ _ _ _ _ _ _ _ _ _
@@ -55,18 +52,14 @@
       <br />
       _ _ _ _ _ _ _ _
     </div>
-    <img
-      src="hang.png"
-      style="position: absolute; left: 1550px; bottom: 250px"
-      width="400"
-    />
+	<img src = "hang.png" style = " position: absolute;left: 78%; bottom: 25%" width= 400 > </img>
     <br />
     <br />
     <br />
     <br />
     <br />
     <br />
-    <div class="horizontal-line" style="width: 1495px"></div>
+    <div class="horizontal-line" style="width: 76.3%"></div>
     <span class="key" id="A" onclick="onClick('A')">A</span>
     <span class="key" id="B" onclick="onClick('B')">B</span>
     <span class="key" id="C" onclick="onClick('C')">C</span>
