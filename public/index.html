@@ -1,12 +1,139 @@
 <html>
   <script>
-    function hide(element) {
-      element.style.display = 'none'
+    //global variable
+    let hang = 0;
+    let PossibleWords = [
+"shabby",
+"zippy",
+"blue in the face",
+"ignorance is bliss",
+"knee jerk reaction",
+"my Achilles heel",
+"cog in the machine",
+"hold your horses",
+"burning the midnight oil",
+"the world’s my oyster",
+"don’t muddy the waters",
+"upset the apple cart",
+"hot cherry pie slice",
+"a castiron stomach",
+"batten down hatches",
+"point of view",
+"shiver me timbers"
+]
+    function hide(key) {
+      
+      document.getElementById(key).style.display = 'none'
     }
+    //Updates hangman display depending on hang value
+    function UpdateHang(){
+      let src = "hang"+hang+".png"
+        document.getElementById("hang").src = src;
+      
+    }
+    //Hides the whole word given replacing characters with '_'
+    function HideWord(word){
+      let hiddenWord = ""
+      for(let i = 0;i<word.length;i++){
+        if(word.charAt(i) == ' '){
+          hiddenWord += ' ';
+        }else{
+          hiddenWord += '_';
+        }
+      }
+      return hiddenWord;
+    }
+    //This is ONLY USED BY INITIALIZE WORD to display a word that it initializes
+    function DisplayWord(word,display){
+      let part = ''; // the location to displaythe word
+      switch (display) {
+  case 0:
+    part = "word1";
+    break;
+  case 1:
+  part = "word2";
+    break;
+  case 2:
+  part = "word3";
+    break;
+    case 3:
+  part = "word4";
+    break;
+
+  default:
+}
+document.getElementById(part).textContent = word;
+}
+    
+    //Displays the entirety of the word given where a space corresponds to a new row
+    function InitializeWord(word){
+      
+      let display = 0;
+      let newWord ='';
+        for (let i = 0; i<word.length;i++){
+          let c = word.charAt(i);
+          c = c.toUpperCase();
+          if(c != ' '){
+            newWord += c + ' ';
+          }else{
+            DisplayWord(newWord,display)
+            display++;
+            newWord ='';
+            if(display > 4){
+            break;
+          }
+          }
+          
+          
+        }
+        if(newWord != ''){
+          DisplayWord(newWord,display);
+        }
+      }
+      /*
+      reader.onload = () => {
+  const fileContents = reader.result;
+  console.log(fileContents);
+};
+*/
+  //picks a random word to be the word for the hangman game
+      function PickWord(){
+        
+        let randomNumber = Math.floor(Math.random() * PossibleWords.length);
+        return PossibleWords[randomNumber];
+        
+      }
+      //Reveals the letter of the key pressed
+      function UpdateWord(key){
+        let atleastOne = false;
+        let newWord = "";
+        for(let i = 0;i<hangManWord.length;i++){
+          if(hangManWord.charAt(i).toUpperCase() == key){
+            newWord += key;
+            atleastOne = true;
+          }else{
+            newWord += hiddenWord.charAt(i);
+          }
+        }
+        if(atleastOne){
+          hiddenWord = newWord;
+          InitializeWord(hiddenWord);
+          //CheckIfWin();
+
+        }else{
+          hang++;
+          UpdateHang();
+          //CheckIfLose()
+        }
+
+      }
+     
+
+    
   </script>
   <style>
     div {
-      font-size: 55px;
+      font-size: 175%;
     }
     .vertical-line {
       border-left: 5px solid black;
@@ -18,12 +145,12 @@
     }
     .key {
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-size: 70px;
+      font-size: 450%;
       padding-left: 1.5%;
 	padding-right: 1.5%;
     }
     .key:hover {
-      font-size: 100px;
+      font-size: 600%;
       color: red;
       cursor: pointer;
     }
@@ -43,16 +170,16 @@
 
 	<div class = vertical-line style = "position: absolute; left:76%; bottom: 0px;"></div>
 
-    <div style = "font-size: 80px; padding-left: 5%; padding-top: 7%;">
-      _ _ _ _ _ _ _
-      <br />
-      _ _ _ _ _ _ _ _ _ _ _
-      <br />
-      _ _ _
-      <br />
-      _ _ _ _ _ _ _ _
+    <div style = "font-size: 300%; padding-left: 5%; font-family: 'Comic Sans MS', cursive, sans-serif;">
+     <div id = "word1"></div>
+  
+      <div id = "word2"></div>
+      
+      <div id = "word3"></div>
+      
+      <div id = "word4"></div>
     </div>
-	<img src = "hang.png" style = " position: absolute;left: 78%; bottom: 25%" width= 400 > </img>
+	<img id = "hang" src = "" style = " position: absolute;left: 78%; bottom: 25%" width= 400 > </img>
     <br />
     <br />
     <br />
@@ -95,16 +222,20 @@
     <script>
       const urlAddress = window.location.href
       const teamId = urlAddress.substring(urlAddress.lastIndexOf('/') + 1)
-      var socket = io()
+      //var socket = io()
       function onClick(key) {
-        socket.emit('keyPressed', key, teamId)
-        document.getElementById(key).style.display = 'none'
+        //socket.emit('keyPressed', key, teamId)
+        hide(key)
+        UpdateWord(key)
       }
-      socket.on('keyPressed', (tempKey, tempTeamId) => {
+      /*
+    socket.on('keyPressed', (tempKey, tempTeamId) => {
         if (tempTeamId == teamId) {
           document.getElementById(tempKey).style.display = 'none'
         }
       })
+    */
+   /*
       // Listen for the "endGame" message from the server
       socket.on('endGame', (result, tempTeamId) => {
         if (tempTeamId == teamId) {
@@ -120,8 +251,17 @@
       window.onbeforeunload = function(e) {
         return "Do you want to exit this page?";
       }; 
+    */
+    </script>
+    <script>
+      // THIS PORTION IS MEANT FOR INITIALIZING HANG MAN WORD AT START OF GAME
+      UpdateHang();
+      let hangManWord = PickWord();
+      let hiddenWord = HideWord(hangManWord);
+      InitializeWord(hiddenWord);
+      
     </script>
   </head>
 
-  <center></center>
+  
 </html>
