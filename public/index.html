@@ -1,48 +1,50 @@
 <html>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+
   <script>
-    //global variable
-    let hang = 0;
-    let PossibleWords = [
-"shabby",
-"zippy",
-"blue in the face",
-"ignorance is bliss",
-"knee jerk reaction",
-"my Achilles heel",
-"cog in the machine",
-"hold your horses",
-"burning the midnight oil",
-"the world’s my oyster",
-"don’t muddy the waters",
-"upset the apple cart",
-"hot cherry pie slice",
-"a castiron stomach",
-"batten down hatches",
-"point of view",
-"shiver me timbers"
-]
+    //Reset keyboard making every key visible again, used for when game restarts
+  function ResetKeyboard(){
+    keys = document.querySelectorAll("span.key")
+    
+    keys.forEach(key => {
+      key.style.display = "";
+    });
+  }
+  //updates the keyboard so that it odes not include any keys included in "board", used whn you join in the middle of a game
+  function UpdateKeyboard(board){
+    keys = board
+    console.log("Update")
+    keys.forEach(key => {
+      document.getElementById(key).style.display = 'none';
+    });
+  }
+//Display's the User's name
+function DisplayName(name){
+  document.getElementById('Role').textContent = "Name: " + name
+}
+
+//hides a clicked key
     function hide(key) {
-      
       document.getElementById(key).style.display = 'none'
     }
-    //Updates hangman display depending on hang value
-    function UpdateHang(){
-      let src = "hang"+hang+".png"
-        document.getElementById("hang").src = src;
+    //Updates hangman displayed image based on image given
+    function UpdateHang(hangImage){
+        const imageString = btoa(String.fromCharCode(...new Uint8Array(hangImage)));
+        document.getElementById('hang').src = 'data:image/png;base64,' + imageString;
       
     }
-    //Hides the whole word given replacing characters with '_'
-    function HideWord(word){
-      let hiddenWord = ""
-      for(let i = 0;i<word.length;i++){
-        if(word.charAt(i) == ' '){
-          hiddenWord += ' ';
-        }else{
-          hiddenWord += '_';
-        }
-      }
-      return hiddenWord;
-    }
+    
+   //Updates header with the new message given
+   function UpdateHeader(message){
+    document.getElementById('heading').textContent = message;
+   }
+   //removes the entire word display, meant for when game restarts
+   function RemoveWord(){
+    document.getElementById('word1').textContent = "";
+    document.getElementById('word2').textContent = "";
+    document.getElementById('word3').textContent = "";
+    document.getElementById('word4').textContent = "";
+   }
     //This is ONLY USED BY INITIALIZE WORD to display a word that it initializes
     function DisplayWord(word,display){
       let part = ''; // the location to displaythe word
@@ -83,54 +85,13 @@ document.getElementById(part).textContent = word;
             break;
           }
           }
-          
-          
         }
         if(newWord != ''){
           DisplayWord(newWord,display);
         }
       }
-      /*
-      reader.onload = () => {
-  const fileContents = reader.result;
-  console.log(fileContents);
-};
-*/
-  //picks a random word to be the word for the hangman game
-      function PickWord(){
-        
-        let randomNumber = Math.floor(Math.random() * PossibleWords.length);
-        return PossibleWords[randomNumber];
-        
-      }
-      //Reveals the letter of the key pressed
-      function UpdateWord(key){
-        let atleastOne = false;
-        let newWord = "";
-        for(let i = 0;i<hangManWord.length;i++){
-          if(hangManWord.charAt(i).toUpperCase() == key){
-            newWord += key;
-            atleastOne = true;
-          }else{
-            newWord += hiddenWord.charAt(i);
-          }
-        }
-        if(atleastOne){
-          hiddenWord = newWord;
-          InitializeWord(hiddenWord);
-          //CheckIfWin();
-
-        }else{
-          hang++;
-          UpdateHang();
-          //CheckIfLose()
-        }
-
-      }
-     
-
-    
   </script>
+  <!--Styles-->
   <style>
     div {
       font-size: 175%;
@@ -145,7 +106,7 @@ document.getElementById(part).textContent = word;
     }
     .key {
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-size: 450%;
+      font-size: 375%;
       padding-left: 1.5%;
 	padding-right: 1.5%;
     }
@@ -158,17 +119,17 @@ document.getElementById(part).textContent = word;
   <head>
     <title>HangMan Game</title>
     <div id="TopMostSection">
-		<div id = "Timer" style="display: inline-block;"> Timer: 30 </div>
+		<div id = "Timer" style="display: inline-block;"> Timer:</div>
       <div id = "Role" style="display: inline-block;position: absolute; left: 80%;">
-        Role: Guesser
+       
       </div>
     </div>
 
-    <div align="center" id="heading">Player 1's Turn</div>
+    <div align="center" id="heading">Waiting For Players...</div>
     <br />
     <div class="horizontal-line"></div>
 
-	<div class = vertical-line style = "position: absolute; left:76%; bottom: 0px;"></div>
+	<div class = vertical-line style = "position: absolute; left:76%; bottom: 0%;"></div>
 
     <div style = "font-size: 300%; padding-left: 5%; font-family: 'Comic Sans MS', cursive, sans-serif;">
      <div id = "word1"></div>
@@ -215,51 +176,81 @@ document.getElementById(part).textContent = word;
     <span class="key" id="X" onclick="onClick('X')">X</span>
     <span class="key" id="Y" onclick="onClick('Y')">Y</span>
     <span class="key" id="Z" onclick="onClick('Z')">Z</span>
-    <!-- These two elements are temporary. I only put them here to check if the socket.io is working properly -->
-    <div id="lose-message" style="display: none">You Lose!</div>
-    <div id="win-message" style="display: none">You Won!</div>
+    
+    
+    
     <script src="/socket.io/socket.io.js"></script>
     <script>
+
       const urlAddress = window.location.href
-      const teamId = urlAddress.substring(urlAddress.lastIndexOf('/') + 1)
-      //var socket = io()
+      
+      
+      
       function onClick(key) {
-        //socket.emit('keyPressed', key, teamId)
-        hide(key)
-        UpdateWord(key)
+        socket.emit('KeyPressed', key, userName)
+        
       }
-      /*
-    socket.on('keyPressed', (tempKey, tempTeamId) => {
-        if (tempTeamId == teamId) {
-          document.getElementById(tempKey).style.display = 'none'
-        }
-      })
-    */
-   /*
-      // Listen for the "endGame" message from the server
-      socket.on('endGame', (result, tempTeamId) => {
-        if (tempTeamId == teamId) {
-          if (result == 'LOSE') {
-            // Show the "You lose" message. We might have this on a separate page in the future
-            document.getElementById('lose-message').style.display = 'block'
-          } else {
-            // Show the "You won" message. We might have this on a separate page in the future
-            document.getElementById('win-message').style.display = 'block'
-          }
-        }
-      })
-      window.onbeforeunload = function(e) {
-        return "Do you want to exit this page?";
-      }; 
-    */
     </script>
     <script>
-      // THIS PORTION IS MEANT FOR INITIALIZING HANG MAN WORD AT START OF GAME
-      UpdateHang();
-      let hangManWord = PickWord();
-      let hiddenWord = HideWord(hangManWord);
-      InitializeWord(hiddenWord);
+
+      //Asks for User's name, length should be greateer then 15
+      let userName = "12345678913456789";
+     let message = "Please enter your name(15 characters max):"
+     let nameLength = 15;
+      while(userName.length > nameLength){
+      userName = prompt(message);
+      message = "Invalid Name :: Please enter your name(15 characters max):"
+      }
+
+      DisplayName(userName);
+
+      var socket = io('http://localhost:3000')
+
+      //Updates the displayed Timer
+      socket.on('UpdateTimer', (seconds) => {
+        document.getElementById('Timer').textContent = "Timer: " + seconds;
+    });
+//Updates currently displayed word
+    socket.on('UpdateWord', (word) => {
+        InitializeWord(word);
+    });
+    //updates hangman image
+    socket.on('UpdateHang', (hangImage) => {
+        UpdateHang(hangImage);
+    });
+    // hides key
+    socket.on('HideKey', (key) => {
+        hide(key);
+    });
+    //updates header message
+    socket.on('UpdateHeader', (message) => {
+        UpdateHeader(message);
+    });
+    //Resets all keyboard keys
+    socket.on('ResetKeyboard', () => {
+        ResetKeyboard();
+    });
+    //updates keyboard 
+    socket.on('UpdateKeyboard', (board) => {
+        UpdateKeyboard(board);
+    });
+    //Deletes the current word displayed
+    socket.on('RemoveWord', () => {
+        RemoveWord();
+    });
+    //Updates displayed nme
+    socket.on('UpdateName', (name) => {
+        userName = name;
+        DisplayName(userName);
+    });
+    
+    
+      socket.connect()
+      socket.emit('addPlayer', userName);
       
+      
+
+
     </script>
   </head>
 
