@@ -31,7 +31,7 @@ io.sockets.on('connection', function (socket) {
     app.get(`/${roomId}`, (req, res) => {
       res.sendFile(__dirname + '/public/index.html')
     })
-    currentSession = new GameSession('HELLO', 5)
+    currentSession = new GameSession()
     //currentSession.addPlayer(roomId)
     sessionList[roomId] = currentSession
   })
