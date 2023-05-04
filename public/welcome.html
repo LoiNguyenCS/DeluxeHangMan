@@ -2,6 +2,7 @@
 <p>Click the button below to join the game.</p>
 <button onclick="joinGame()">Join Game As Individual</button>
 <p>Or join an existing team by entering the team ID:</p>
+<span style="display: none" , id="Error"> ERROR Invalid team ID</span>
 <input type="text" id="teamId" />
 <button onclick="joinTeam()">Join Team</button>
 
@@ -15,6 +16,13 @@
 
   function joinTeam() {
     const teamId = document.getElementById('teamId').value
-    window.location.href = `/${teamId}`
+    socket.emit('canJoin', teamId)
   }
+
+  socket.on('joinGame', (teamId) => {
+    window.location.href = `/${teamId}`
+  })
+  socket.on('declineJoin', () => {
+    document.getElementById('Error').style.display = ''
+  })
 </script>

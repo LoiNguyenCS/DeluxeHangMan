@@ -3,93 +3,94 @@
 
   <script>
     //Reset keyboard making every key visible again, used for when game restarts
-  function ResetKeyboard(){
-    keys = document.querySelectorAll("span.key")
-    
-    keys.forEach(key => {
-      key.style.display = "";
-    });
-  }
-  //updates the keyboard so that it odes not include any keys included in "board", used whn you join in the middle of a game
-  function UpdateKeyboard(board){
-    keys = board
-    console.log("Update")
-    keys.forEach(key => {
-      document.getElementById(key).style.display = 'none';
-    });
-  }
-//Display's the User's name
-function DisplayName(name){
-  document.getElementById('Role').textContent = "Name: " + name
-}
+    function ResetKeyboard() {
+      keys = document.querySelectorAll('span.key')
 
-//hides a clicked key
+      keys.forEach((key) => {
+        key.style.display = ''
+      })
+    }
+    //updates the keyboard so that it odes not include any keys included in "board", used whn you join in the middle of a game
+    function UpdateKeyboard(board) {
+      keys = board
+      console.log('Update')
+      keys.forEach((key) => {
+        document.getElementById(key).style.display = 'none'
+      })
+    }
+    //Display's the User's name
+    function DisplayName(name) {
+      document.getElementById('Role').textContent = 'Name: ' + name
+    }
+
+    //hides a clicked key
     function hide(key) {
       document.getElementById(key).style.display = 'none'
     }
     //Updates hangman displayed image based on image given
-    function UpdateHang(hangImage){
-        const imageString = btoa(String.fromCharCode(...new Uint8Array(hangImage)));
-        document.getElementById('hang').src = 'data:image/png;base64,' + imageString;
-      
+    function UpdateHang(hangImage) {
+      const imageString = btoa(
+        String.fromCharCode(...new Uint8Array(hangImage))
+      )
+      document.getElementById('hang').src =
+        'data:image/png;base64,' + imageString
     }
-    
-   //Updates header with the new message given
-   function UpdateHeader(message){
-    document.getElementById('heading').textContent = message;
-   }
-   //removes the entire word display, meant for when game restarts
-   function RemoveWord(){
-    document.getElementById('word1').textContent = "";
-    document.getElementById('word2').textContent = "";
-    document.getElementById('word3').textContent = "";
-    document.getElementById('word4').textContent = "";
-   }
-    //This is ONLY USED BY INITIALIZE WORD to display a word that it initializes
-    function DisplayWord(word,display){
-      let part = ''; // the location to displaythe word
-      switch (display) {
-  case 0:
-    part = "word1";
-    break;
-  case 1:
-  part = "word2";
-    break;
-  case 2:
-  part = "word3";
-    break;
-    case 3:
-  part = "word4";
-    break;
 
-  default:
-}
-document.getElementById(part).textContent = word;
-}
-    
+    //Updates header with the new message given
+    function UpdateHeader(message) {
+      document.getElementById('heading').textContent = message
+    }
+    //removes the entire word display, meant for when game restarts
+    function RemoveWord() {
+      document.getElementById('word1').textContent = ''
+      document.getElementById('word2').textContent = ''
+      document.getElementById('word3').textContent = ''
+      document.getElementById('word4').textContent = ''
+    }
+    //This is ONLY USED BY INITIALIZE WORD to display a word that it initializes
+    function DisplayWord(word, display) {
+      let part = '' // the location to displaythe word
+      switch (display) {
+        case 0:
+          part = 'word1'
+          break
+        case 1:
+          part = 'word2'
+          break
+        case 2:
+          part = 'word3'
+          break
+        case 3:
+          part = 'word4'
+          break
+
+        default:
+      }
+      document.getElementById(part).textContent = word
+    }
+
     //Displays the entirety of the word given where a space corresponds to a new row
-    function InitializeWord(word){
-      
-      let display = 0;
-      let newWord ='';
-        for (let i = 0; i<word.length;i++){
-          let c = word.charAt(i);
-          c = c.toUpperCase();
-          if(c != ' '){
-            newWord += c + ' ';
-          }else{
-            DisplayWord(newWord,display)
-            display++;
-            newWord ='';
-            if(display > 4){
-            break;
+    function InitializeWord(word) {
+      let display = 0
+      let newWord = ''
+      for (let i = 0; i < word.length; i++) {
+        let c = word.charAt(i)
+        c = c.toUpperCase()
+        if (c != ' ') {
+          newWord += c + ' '
+        } else {
+          DisplayWord(newWord, display)
+          display++
+          newWord = ''
+          if (display > 4) {
+            break
           }
-          }
-        }
-        if(newWord != ''){
-          DisplayWord(newWord,display);
         }
       }
+      if (newWord != '') {
+        DisplayWord(newWord, display)
+      }
+    }
   </script>
   <!--Styles-->
   <style>
@@ -108,7 +109,7 @@ document.getElementById(part).textContent = word;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       font-size: 375%;
       padding-left: 1.5%;
-	padding-right: 1.5%;
+      padding-right: 1.5%;
     }
     .key:hover {
       font-size: 600%;
@@ -119,28 +120,44 @@ document.getElementById(part).textContent = word;
   <head>
     <title>HangMan Game</title>
     <div id="TopMostSection">
-		<div id = "Timer" style="display: inline-block;"> Timer:</div>
-      <div id = "Role" style="display: inline-block;position: absolute; left: 80%;">
-       
-      </div>
+      <div id="Timer" style="display: inline-block">Timer:</div>
+      <div
+        id="Role"
+        style="display: inline-block; position: absolute; left: 80%"
+      ></div>
     </div>
 
     <div align="center" id="heading">Waiting For Players...</div>
     <br />
     <div class="horizontal-line"></div>
 
-	<div class = vertical-line style = "position: absolute; left:76%; bottom: 0%;"></div>
+    <div
+      class="vertical-line"
+      style="position: absolute; left: 76%; bottom: 0%"
+    ></div>
 
-    <div style = "font-size: 300%; padding-left: 5%; font-family: 'Comic Sans MS', cursive, sans-serif;">
-     <div id = "word1"></div>
-  
-      <div id = "word2"></div>
-      
-      <div id = "word3"></div>
-      
-      <div id = "word4"></div>
+    <div
+      style="
+        font-size: 300%;
+        padding-left: 5%;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+      "
+    >
+      <div id="word1"></div>
+
+      <div id="word2"></div>
+
+      <div id="word3"></div>
+
+      <div id="word4"></div>
     </div>
-	<img id = "hang" src = "" style = " position: absolute;left: 78%; bottom: 25%" width= 400 > </img>
+    <img
+      id="hang"
+      src="Nothing.png"
+      style="position: absolute; left: 78%; bottom: 25%"
+      width="400"
+    >
+  </img>
     <br />
     <br />
     <br />
@@ -176,83 +193,69 @@ document.getElementById(part).textContent = word;
     <span class="key" id="X" onclick="onClick('X')">X</span>
     <span class="key" id="Y" onclick="onClick('Y')">Y</span>
     <span class="key" id="Z" onclick="onClick('Z')">Z</span>
-    
-    
-    
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
       const urlAddress = window.location.href
-      
-      
-      
+
       function onClick(key) {
         socket.emit('KeyPressed', key, userName)
-        
       }
     </script>
     <script>
-
       //Asks for User's name, length should be greateer then 15
-      let userName = "12345678913456789";
-     let message = "Please enter your name(15 characters max):"
-     let nameLength = 15;
-      while(userName.length > nameLength){
-      userName = prompt(message);
-      message = "Invalid Name :: Please enter your name(15 characters max):"
+      let userName = '12345678913456789'
+      let message = 'Please enter your name(15 characters max):'
+      let nameLength = 15
+      while (userName.length > nameLength) {
+        userName = prompt(message)
+        message = 'Invalid Name :: Please enter your name(15 characters max):'
       }
 
-      DisplayName(userName);
+      DisplayName(userName)
 
       var socket = io('http://localhost:3000')
 
       //Updates the displayed Timer
       socket.on('UpdateTimer', (seconds) => {
-        document.getElementById('Timer').textContent = "Timer: " + seconds;
-    });
-//Updates currently displayed word
-    socket.on('UpdateWord', (word) => {
-        InitializeWord(word);
-    });
-    //updates hangman image
-    socket.on('UpdateHang', (hangImage) => {
-        UpdateHang(hangImage);
-    });
-    // hides key
-    socket.on('HideKey', (key) => {
-        hide(key);
-    });
-    //updates header message
-    socket.on('UpdateHeader', (message) => {
-        UpdateHeader(message);
-    });
-    //Resets all keyboard keys
-    socket.on('ResetKeyboard', () => {
-        ResetKeyboard();
-    });
-    //updates keyboard 
-    socket.on('UpdateKeyboard', (board) => {
-        UpdateKeyboard(board);
-    });
-    //Deletes the current word displayed
-    socket.on('RemoveWord', () => {
-        RemoveWord();
-    });
-    //Updates displayed nme
-    socket.on('UpdateName', (name) => {
-        userName = name;
-        DisplayName(userName);
-    });
-    
-    
+        document.getElementById('Timer').textContent = 'Timer: ' + seconds
+      })
+      //Updates currently displayed word
+      socket.on('UpdateWord', (word) => {
+        InitializeWord(word)
+      })
+      //updates hangman image
+      socket.on('UpdateHang', (hangImage) => {
+        UpdateHang(hangImage)
+      })
+      // hides key
+      socket.on('HideKey', (key) => {
+        hide(key)
+      })
+      //updates header message
+      socket.on('UpdateHeader', (message) => {
+        UpdateHeader(message)
+      })
+      //Resets all keyboard keys
+      socket.on('ResetKeyboard', () => {
+        ResetKeyboard()
+      })
+      //updates keyboard
+      socket.on('UpdateKeyboard', (board) => {
+        UpdateKeyboard(board)
+      })
+      //Deletes the current word displayed
+      socket.on('RemoveWord', () => {
+        RemoveWord()
+      })
+      //Updates displayed nme
+      socket.on('UpdateName', (name) => {
+        userName = name
+        DisplayName(userName)
+      })
+
       socket.connect()
-      socket.emit('addPlayer', userName);
-      
-      
-
-
+      socket.emit('addPlayer', userName)
     </script>
   </head>
-
-  
 </html>
