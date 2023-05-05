@@ -1,0 +1,46 @@
+<<<<<<< HEAD
+{
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  },
+  "scripts": {
+    "format": "prettier --write \"public/**/*.html\" && prettier --write \"**/*.js\""
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.7"
+  }
+}
+=======
+{
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "dependencies": {
+    "engine": "^1.0.0",
+    "engine.io": "^6.4.2",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "l": "^0.6.0",
+    "socket.io": "^4.6.1"
+  },
+  "scripts": {
+    "format": "prettier --write \"public/**/*.html\" && prettier --write \"**/*.js\"",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.5.0",
+    "prettier": "^2.8.7"
+  }
+}
+>>>>>>> 527e02894b8d88f56e0e80289f6b6f4577256288
