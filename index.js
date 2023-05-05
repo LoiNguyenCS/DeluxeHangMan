@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 /**
- * If a player joins as an individual, a new webpage will be served at localhost:3000/socket_id. Otherwise, he will join
+ * If a player joins as an individual, a new webpage will be served at localhost:2010/socket_id. Otherwise, he will join
  * another webpage created by some previous users. For convenience, we don't discriminate between individual mode and
  * team mode at the backend level. Every game session is regarded as a GameSession instance equally. Right now we are
  * having a lot of console logs printed because it is convenient for debugging. We can delete them in the future.
@@ -137,8 +137,8 @@ io.sockets.on('connection', function (socket) {
 })
 
 //where server listens
-server.listen(3000, () => {
-  console.log('listening on *:3000')
+server.listen(2010, () => {
+  console.log('listening on *:2010')
 })
 
 //Checks to see if the game has either been won or lost
