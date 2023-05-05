@@ -10,7 +10,10 @@ const io = new Server(server)
 the user who created that GameSession instance 
 */
 const sessionList = {}
-let currentSession = new GameSession()
+let timerId = undefined;
+let mock =  new GameSession()
+
+
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/welcome.html')
@@ -30,10 +33,18 @@ io.sockets.on('connection', function (socket) {
     app.get(`/${roomId}`, (req, res) => {
       res.sendFile(__dirname + '/public/index.html')
     })
-    currentSession = new GameSession()
-
-    sessionList[roomId] = currentSession
-    setTimeout(timerFunction, 1000)
+    let session = new GameSession()
+    
+    sessionList[roomId] = session
+    
+    if(timerId){
+      clearTimeout(timerId);
+      console.log("time Cleared");
+    }
+    
+    timerId = setTimeout(timerFunctionStartup, 1000)
+    
+    
   })
   //determines if the game ID given exists or not, if it does then lets know that the game can be joined.
   socket.on('canJoin', (teamId) => {
@@ -46,35 +57,46 @@ io.sockets.on('connection', function (socket) {
 
   //New player added to game, initialize them and make sure they are prepared and updated
   socket.on('addPlayer', (name) => {
+    
     name = CheckNameUnique(name, socket)
-    currentSession.addPlayer(name, socket.id)
+    currentSessions(socket).addPlayer(name, socket.id,socket)
     UpdateOneWord(socket)
     UpdateOneHang(socket)
     UpdateOneHeader(socket)
     UpdateKeyboard(socket)
   })
   //counts down the timer for everyone, conforming to certain events depending on game state when counter reaches zero
-  function timerFunction() {
-    if (currentSession.Seconds != 0 && currentSession.status != 'True_Wait') {
-      currentSession.Seconds -= 1
-      UpdateTimer()
+  function timerFunctionStartup(){
+    for( let key in sessionList){
+      timerFunction(sessionList[key])
+    }
+    timerId = setTimeout(timerFunctionStartup, 1000)
+
+  }
+  function timerFunction(game) {
+    let socket = game.sockets[0];
+    if (game.Seconds != 0 && game.status != 'True_Wait') {
+      game.Seconds -= 1
+      UpdateTimer(socket)
     } else {
-      switch (currentSession.status) {
+      switch (game.status) {
         case 'Wait':
-          currentSession.status = 'In Progress'
-          currentSession.PickWord()
-          UpdateWord()
+          game.status = 'In Progress'
+          game.PickWord()
+          UpdateWord(socket)
         case 'In Progress':
-          currentSession.SwitchPlayer()
-          UpdateHeader()
+          game.SwitchPlayer()
+          UpdateHeader(socket)
           break
         case 'Win':
         case 'Lose':
-          currentSession.RestartGame()
-          ResetPlayers()
+          game.RestartGame()
+          ResetPlayers(socket)
       }
     }
-    setTimeout(timerFunction, 1000)
+    
+    
+    
   }
 
   /*
@@ -86,26 +108,31 @@ io.sockets.on('connection', function (socket) {
    letter "E" has been pressed for team A. Then other members in team A will receive the message and have their webpages updated
    */
   socket.on('KeyPressed', (letter, name) => {
+    console.log("first " + socket.request.headers.referer)
     if (
-      currentSession.ActivePlayer == name &&
-      currentSession.status == 'In Progress'
+      currentSessions(socket).ActivePlayer == name &&
+      currentSessions(socket).status == 'In Progress'
     ) {
-      currentSession.SwitchPlayer()
-      UpdateHeader()
-      HideKey(letter)
-      if (currentSession.UpdateWord(letter)) {
-        UpdateWord()
+      currentSessions(socket).SwitchPlayer()
+      UpdateHeader(socket)
+      HideKey(letter,socket)
+      if (currentSessions(socket).UpdateWord(letter)) {
+        UpdateWord(socket)
       } else {
-        UpdateHang()
+        UpdateHang(socket)
       }
-      checkIfGameOver()
+      checkIfGameOver(socket)
     }
   })
 
   //Remove the player when player disconnects
   socket.on('disconnect', () => {
-    currentSession.RemovePlayer(socket.id)
-    UpdateHeader()
+    if(currentSessions(socket) != undefined){
+    currentSessions(socket).RemovePlayer(socket.id)
+    UpdateHeader(socket)
+  }
+    
+    
   })
 })
 
@@ -115,81 +142,120 @@ server.listen(3000, () => {
 })
 
 //Checks to see if the game has either been won or lost
-function checkIfGameOver() {
-  var state = currentSession.status
+function checkIfGameOver(socket) {
+  var state = currentSessions(socket).status
   if (state == 'Win' || state == 'Lose') {
-    UpdateHeader()
+    UpdateHeader(socket)
   } else {
     return
   }
 }
 
 //Hides given key for all players
-function HideKey(letter) {
-  io.emit('HideKey', letter)
+function HideKey(letter,socket) {
+  sendToGame('HideKey',letter,socket)
 }
 //updates header for all players
-function UpdateHeader() {
-  io.emit('UpdateHeader', currentSession.header)
+function UpdateHeader(socket) {
+  sendToGame('UpdateHeader',currentSessions(socket).header,socket)
+  
+
 }
 // updates how the current word is displayed for all players
-function UpdateWord() {
-  io.emit('UpdateWord', currentSession.word)
+function UpdateWord(socket) {
+  sendToGame('UpdateWord',currentSessions(socket).word,socket)
 }
 //Updates Timer for all players
-function UpdateTimer() {
-  io.emit('UpdateTimer', currentSession.Seconds)
+function UpdateTimer(socket) {
+ 
+  sendToGame('UpdateTimer',currentSessions(socket).Seconds,socket)
 }
 //Updates hangman image for all players
-function UpdateHang() {
-  let image = fs.readFileSync(currentSession.hangImage)
-  io.emit('UpdateHang', image)
+function UpdateHang(socket) {
+  let image = fs.readFileSync(currentSessions(socket).hangImage)
+  sendToGame('UpdateHang',image,socket)
 }
 //causes all players to reset their keyboard keys
-function ResetKeyboard() {
-  io.emit('ResetKeyboard')
+function ResetKeyboard(socket) {
+  
+  sendToGame('ResetKeyboard','',socket)
 }
 //Removes the word for all players
-function RemoveWord() {
-  io.emit('RemoveWord')
+function RemoveWord(socket) {
+  
+  sendToGame('RemoveWord','',socket)
 }
 //Updates the keyboard of the user who just joined
 function UpdateKeyboard(socket) {
-  socket.emit('UpdateKeyboard', currentSession.guessedLetters)
+  socket.emit('UpdateKeyboard', currentSessions(socket).guessedLetters)
 }
 
 //ALL BELOW function as their none "One" counterparts, only difference is that these act on the player who just joined the game and needs to be updated
 function UpdateOneHeader(socket) {
-  socket.emit('UpdateHeader', currentSession.header)
+  socket.emit('UpdateHeader', currentSessions(socket).header)
 }
 function UpdateOneWord(socket) {
-  socket.emit('UpdateWord', currentSession.word)
+  socket.emit('UpdateWord', currentSessions(socket).word)
 }
 function UpdateOneTimer(socket) {
-  socket.emit('UpdateTimer', currentSession.Seconds)
+  socket.emit('UpdateTimer', currentSessions(socket).Seconds)
 }
 function UpdateOneHang(socket) {
-  let image = fs.readFileSync(currentSession.hangImage)
+  let image = fs.readFileSync(currentSessions(socket).hangImage)
   socket.emit('UpdateHang', image)
 }
 
 //Checks if the given username is unique, if not then modifies it and sends it back so it is unique
 function CheckNameUnique(name, socket) {
-  let num = currentSession.CheckNameUnique(name)
+  let num = currentSessions(socket).CheckNameUnique(name)
   if (num) {
     name = name + '(' + num.toString() + ')'
     socket.emit('UpdateName', name)
-    console.log('FIXED NAME' + name)
+   
   }
-  console.log('created ' + num.toString())
+ 
   return name
 }
 
-//Resets all players for a ew game
-function ResetPlayers() {
-  ResetKeyboard()
-  UpdateHeader()
-  UpdateWord()
-  UpdateHang()
-  RemoveWord()
+//Resets all players for a new game
+function ResetPlayers(socket) {
+  ResetKeyboard(socket)
+  UpdateHeader(socket)
+  UpdateWord(socket)
+  UpdateHang(socket)
+  RemoveWord(socket)
+}
+function currentSessions(socket){
+  let ret = undefined
+if(socket != undefined){
+
+
+ let roomId = myGame(socket.request.headers.referer)
+
+  ret = sessionList[roomId]
+}
+  
+  if(ret != undefined){
+    return ret
+  }else{
+    return mock
+  }
+}
+function sendToGame(message,item,socket){
+  
+  currentSessions(socket).sockets.forEach(socket=> {
+    socket.emit(message,item);
+    });
+}
+function myGame(url){
+  // get the current URL
+
+
+// split the URL by "/"
+var urlParts = url.split("/");
+
+// get the last part of the URL
+var lastPart = urlParts[urlParts.length - 1];
+
+return lastPart; // print the last part to the console
 }

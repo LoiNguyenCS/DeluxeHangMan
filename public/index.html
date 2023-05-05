@@ -2,6 +2,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
 
   <script>
+    function myGame(){
+      // get the current URL
+  var url = window.location.href;
+  
+  // split the URL by "/"
+  var urlParts = url.split("/");
+  
+  // get the last part of the URL
+  var lastPart = urlParts[urlParts.length - 1];
+  
+  return lastPart; // print the last part to the console
+    }
     //Reset keyboard making every key visible again, used for when game restarts
     function ResetKeyboard() {
       keys = document.querySelectorAll('span.key')

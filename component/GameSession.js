@@ -7,6 +7,7 @@ class GameSession {
       IN_PROGRESS: 'In Progress', // game is in progress and each countdown will switch the current active player
       WIN: 'Win', // game has been won
       LOSE: 'Lose', /// game has been lost
+      CLOSE: 'Closed' //everybody left, delete this game;
     }
 
     this.header = 'Waiting for Players' // what dispalys as the header for the players
@@ -18,11 +19,12 @@ class GameSession {
     this.ActivePlayer = 0 // The player whose turn it is, set to 0 when noone is assigned yet
     this.guessedLetters = [] // letters previously guessed, used to catch up people who join mid-game
     this.PlayerPassTimer = 30 // Time it takes for the active player to switch out while game is in progress and the current actiove player has not clicked a key
-    this.WaitingTimer = 60 // Time it takes for pre-game wait period, allowing players a chance to join before game starts
+    this.WaitingTimer = 10 // Time it takes for pre-game wait period, allowing players a chance to join before game starts
     this.RestartTimer = 20 // once game ends, how long it takes for the game to restart
     this.status = this.States.TRUE_WAIT // status of the current game session
     this.Seconds = this.WaitingTimer + 1 // The seconds that should display on the timer
     this.hang = 0 // the state of the hangman image, the number corresponds to how many incorrect guesses, need 7 incorrect guesses to lose
+    this.sockets = [] // all sockets
     this.PossibleWords = [
       'shabby',
       'zippy',
@@ -45,7 +47,8 @@ class GameSession {
   }
 
   //add player to the game, sets status to WAIT if this is the first player joining
-  addPlayer(player, id) {
+  addPlayer(player, id,socket) {
+    this.sockets.push(socket);
     this.idToName[id] = player
     this.listOfPlayers.enqueue(player)
     if (this.status == this.States.TRUE_WAIT) {
@@ -160,6 +163,9 @@ class GameSession {
 
     delete this.idToName[id]
     this.listOfPlayers.forceOut(name)
+    if(this.listOfPlayers.isEmpty() && this.status != this.States.TRUE_WAIT){
+      this.status = this.States.CLOSE;
+    }
   }
   //checks if the given user name is unique or already exists in the queue, if it does returns number of occureces so that the name can be updated
   CheckNameUnique(name) {
